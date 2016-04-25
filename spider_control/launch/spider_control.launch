@@ -1,0 +1,21 @@
+<launch>
+
+<rosparam file="$(find spider_control)/config/spider_control.yaml" command="load"/>
+
+<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" ns="/spider" args=" 
+coxa_joint_r1_position_controller  coxa_joint_r2_position_controller  coxa_joint_r3_position_controller
+coxa_joint_l1_position_controller  coxa_joint_l2_position_controller  coxa_joint_l3_position_controller 
+femur_joint_r1_position_controller femur_joint_r2_position_controller femur_joint_r3_position_controller 
+femur_joint_l1_position_controller femur_joint_l2_position_controller femur_joint_l3_position_controller 
+tibia_joint_r1_position_controller tibia_joint_r2_position_controller tibia_joint_r3_position_controller 
+tibia_joint_l1_position_controller tibia_joint_l2_position_controller tibia_joint_l3_position_controller 
+joint_state_controller"/>
+    
+<!-- convert joint states to TF transforms for rviz, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen">
+  <param name="robot_description_gazebo" command="$(find xacro)/xacro.py '$(find spider_description)/urdf/spider_gazebo.xacro'" />
+  <remap from="/joint_states" to="/spider/joint_states" />
+</node>
+
+</launch>
+
