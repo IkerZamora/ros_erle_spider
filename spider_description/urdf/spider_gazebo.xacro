@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="spider">
+
+<!-- Build the body frame -->
+	
+	<!--Base Link-->
+	<link name="base_link"/> 
+
+	<joint name="base_joint" type="fixed">
+	  <parent link="base_link" />
+	  <child link="thorax" />
+	  <origin xyz="0 0 0" rpy="0 0 0" />
+	</joint>
+
+	<link name="thorax">
+	  <inertial>
+	    <origin xyz="0 0 0" />
+            <mass value="0.5"/>
+            <inertia  ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+          </inertial>
+          <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" /> 
+            <geometry>
+        	<mesh filename="package://spider_description/meshes/thorax.STL"  scale="1 1 1"/>
+            </geometry>
+          </visual>
+          <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"  />
+            <geometry>
+		<mesh filename="package://spider_description/meshes/thorax.STL"  scale="1 1 1"/>
+            </geometry>
+          </collision>
+        </link>
+        <gazebo reference="thorax">
+           <material>Gazebo/Grey</material>
+        </gazebo>
+
+
+<!-- Pi parameter -->
+	<xacro:property name="pi" value="3.1415926535897931" />
+
+<!-- Joint properties -->
+	<xacro:property name="joint_lower_limit" value="-${1.5}" />
+	<xacro:property name="joint_upper_limit" value="${1.5}" />
+	<xacro:property name="joint_effort" value="10000" />
+	<xacro:property name="joint_velocity" value="100" />
+
+<!-- Leg macros -->
+	<xacro:macro name="leg" params="side num x y angle">
+
+<!-- Build leg -->
+
+	<joint name="coxa_joint_${side}${num}" type="revolute">
+    	  <origin xyz="${x} ${y} 0" rpy="0 0 ${angle}" />
+    	  <parent link="thorax" />
+    	  <child link="coxa_${side}${num}" />
+    	  <axis xyz="0 0 -1" />
+    	  <limit lower="${joint_lower_limit}" upper="${joint_upper_limit}" effort="${joint_effort}" velocity="${joint_velocity}" />
+  	</joint>
+
+        <link name="coxa_${side}${num}">
+          <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"  />
+            <mass value="0.1"/>
+            <inertia 	ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+          </inertial>
+          <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"  />
+            <geometry>
+                 <mesh filename="package://spider_description/meshes/coxa_${side}.STL"  scale="1 1 1"/>
+            </geometry>
+          </visual>
+          <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"  />
+            <geometry>
+                 <mesh filename="package://spider_description/meshes/coxa_${side}.STL"   scale="1 1 1"/>
+            </geometry>
+          </collision>
+        </link>
+        <gazebo reference="coxa_${side}${num}">
+          <material>Gazebo/Yellow</material>
+        </gazebo>
+
+  	<joint name="femur_joint_${side}${num}" type="revolute">
+    	  <origin xyz="0.0294 0 0" rpy="-${pi/2} 0 0" />
+    	  <parent link="coxa_${side}${num}" />
+          <child link="femur_${side}${num}" />
+    	  <axis xyz="0 0 -1" />
+    	  <limit lower="${joint_lower_limit}" upper="${joint_upper_limit}" effort="${joint_effort}" velocity="${joint_velocity}" />
+  	</joint>
+
+        <link name="femur_${side}${num}">
+          <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"  />
+            <mass value="0.1"/>
+            <inertia 	ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+          </inertial>
+          <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"  />
+            <geometry>
+                <mesh filename="package://spider_description/meshes/femur_${side}.STL"  scale="1 1 1"/>
+            </geometry>
+          </visual>
+          <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"  />
+            <geometry>
+                <mesh filename="package://spider_description/meshes/femur_${side}.STL"   scale="1 1 1"/>
+            </geometry>
+          </collision>
+        </link>
+        <gazebo reference="femur_${side}${num}">
+          <material>Gazebo/Blue</material>
+        </gazebo>
+
+  	<joint name="tibia_joint_${side}${num}" type="revolute">
+    		<origin xyz="0.08 0 0" rpy="${pi} 0 ${pi/2}" />
+    		<parent link="femur_${side}${num}" />
+    		<child link="tibia_${side}${num}" />
+    		<axis xyz="0 0 1" />
+    		<limit lower="${joint_lower_limit}" upper="${joint_upper_limit}" effort="${joint_effort}" velocity="${joint_velocity}" />
+  	</joint>
+
+        <link name="tibia_${side}${num}">
+          <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"  />
+            <mass value="0.1"/>
+            <inertia 	ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.01"/>
+          </inertial>
+          <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"  />
+            <geometry>
+                <mesh filename="package://spider_description/meshes/tibia_${side}.STL"  scale="1 1 1"/>
+            </geometry>
+          </visual>
+          <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"  />
+            <geometry>
+                <mesh filename="package://spider_description/meshes/tibia_${side}.STL"  scale="1 1 1"/>
+            </geometry>
+            <surface>
+              <friction>
+                 <ode>
+                    <mu>100.</mu>
+                    <mu2>100.</mu2>
+                 </ode> 
+              </friction>
+            </surface>
+          </collision>
+        </link>
+        <gazebo reference="tibia_${side}${num}">
+          <material>Gazebo/Purple</material>
+        </gazebo>
+
+  <transmission name="coxa_transmission_${side}${num}">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="coxa_joint_${side}${num}">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="coxa_m_${side}${num}">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="femur_transmission${side}${num}">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="femur_joint_${side}${num}">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="femur_m_${side}${num}">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="tibia_transmission_${side}${num}">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="tibia_joint_${side}${num}">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="tibia_m_${side}${num}">
+      <hardwareInterface>EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+</xacro:macro>
+
+<!-- Build robot model -->
+	<xacro:leg side="r" num="1" x="0.087598" 	y="-0.050575" 	angle="-${pi/3}" />
+	<xacro:leg side="r" num="2" x="0" 		y="-0.06985" 	angle="-${pi/2}" />
+	<xacro:leg side="r" num="3" x="-0.087598" 	y="-0.050575" 	angle="-${pi*2/3}" />
+	<xacro:leg side="l" num="1" x="0.087598" 	y="0.050575"	angle="${pi/3}" />
+	<xacro:leg side="l" num="2" x="0" 		y="0.06985"	angle="${pi/2}" />
+	<xacro:leg side="l" num="3" x="-0.087598" 	y="0.050575" 	angle="${pi*2/3}" />
+
+<gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/spider</robotNamespace>
+    </plugin>
+  </gazebo>
+
+<gazebo>
+  <plugin name="DiffDrivePlugin18servos" filename="libdiffdrive_plugin_18servos.so">
+      <rosDebugLevel>Debug</rosDebugLevel>
+      <alwaysOn>true</alwaysOn>
+      <coxar1Joint>coxa_joint_r1</coxar1Joint>
+      <coxar2Joint>coxa_joint_r2</coxar2Joint>
+      <coxar3Joint>coxa_joint_r3</coxar3Joint>
+      <coxal1Joint>coxa_joint_l1</coxal1Joint>
+      <coxal2Joint>coxa_joint_l2</coxal2Joint>
+      <coxal3Joint>coxa_joint_l3</coxal3Joint>
+      <femurr1Joint>femur_joint_r1</femurr1Joint>
+      <femurr2Joint>femur_joint_r2</femurr2Joint>
+      <femurr3Joint>femur_joint_r3</femurr3Joint>
+      <femurl1Joint>femur_joint_l1</femurl1Joint>
+      <femurl2Joint>femur_joint_l2</femurl2Joint>
+      <femurl3Joint>femur_joint_l3</femurl3Joint>
+      <tibiar1Joint>tibia_joint_r1</tibiar1Joint>
+      <tibiar2Joint>tibia_joint_r2</tibiar2Joint>
+      <tibiar3Joint>tibia_joint_r3</tibiar3Joint>
+      <tibial1Joint>tibia_joint_l1</tibial1Joint>
+      <tibial2Joint>tibia_joint_l2</tibial2Joint>
+      <tibial3Joint>tibia_joint_l3</tibial3Joint>
+      <updateRate>10.0</updateRate>
+      <robotBaseFrame>base_link</robotBaseFrame>
+  </plugin>
+</gazebo>
+
+  <!-- IMU SENSOR -->
+  <!-- joint name="imu_joint" type="fixed">
+      <axis xyz="1 0 0"/>
+      <origin xyz="0 0 0.2825"/>
+      <parent link="base_link"/>
+      <child link="imu_link"/>
+  </joint>
+  <link name="imu_link">
+      <inertial>
+        <mass value="0.001"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0" iyy="0.000001" iyz="0" izz="0.0001"/>
+      </inertial>
+      <visual>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <box size="0.05 0.05 0.05"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <geometry>
+          <box size=".001 .001 .001"/>
+        </geometry>
+      </collision>
+  </link>
+
+<gazebo>    
+    <plugin name="imu_plugin" filename="libgazebo_ros_imu.so">
+        <alwaysOn>true</alwaysOn>       
+        <bodyName>imu_link</bodyName>
+        <topicName>imu_data</topicName>
+        <serviceName>imu_service</serviceName>
+        <gaussianNoise>0.0</gaussianNoise>
+        <updateRate>10.0</updateRate> 
+    </plugin>
+</gazebo -->
+  
+</robot>
