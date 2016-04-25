@@ -38,12 +38,12 @@
 
   <node name="rviz" pkg="rviz" type="rviz" args="-d $(find spider_description)/urdf.rviz"/>
 
-  <node name="crab_leg_kinematics" pkg="crab_leg_kinematics" type="leg_ik_service"/>
-  <node name="crab_maestro_controller" pkg="crab_maestro_controller" type="controller_sub"/>
-  <node name="crab_body_kinematics" pkg="crab_body_kinematics" type="body_kinematics"/>
-  <node name="crab_gait" pkg="crab_gait" type="gait_kinematics"/>
-  <node name="crab_imu" pkg="crab_imu" type="imu_control"/>
-  <node name="crab_teleop_joy" pkg="crab_teleop_joy" type="teleop_joy" output="screen"/>
+  <node name="spider_leg_kinematics" pkg="spider_leg_kinematics" type="leg_ik_service"/>
+  <node name="spider_maestro_controller" pkg="spider_maestro_controller" type="controller_sub"/>
+  <node name="spider_body_kinematics" pkg="spider_body_kinematics" type="body_kinematics"/>
+  <node name="spider_gait" pkg="spider_gait" type="gait_kinematics"/>
+  <node name="spider_imu" pkg="spider_imu" type="imu_control"/>
+  <node name="spider_teleop_joy" pkg="spider_teleop_joy" type="teleop_joy" output="screen"/>
 
 <!-- PS3 joy node -->
   <node respawn="true" pkg="joy" type="joy_node" name="joy_node" >
