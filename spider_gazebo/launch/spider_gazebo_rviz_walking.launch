@@ -1,0 +1,57 @@
+<launch>
+
+  <arg name="model" />
+  <arg name="gui" default="True" />
+  
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!--arg name="world_name" value="worlds/empty.world"/-->
+    <arg name="world_name" value="$(find spider_gazebo)/worlds/model_push.world"/>
+    <arg name="paused" value="false"/>
+  </include>
+
+  <param name="robot_description_gazebo" command="$(find xacro)/xacro.py '$(find spider_description)/urdf/spider_gazebo.xacro'" />
+  <node name="spider_spawn" pkg="gazebo_ros" type="spawn_model" output="screen" args="-urdf -param robot_description_gazebo -model spider -z 0.2 "/>
+ 
+  <include file="$(find spider_control)/launch/spider_control.launch"/> 
+
+  <!--Lanzar el código de Erle-->
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find spider_description)/urdf/spider_erle.xacro'" />
+  <!-- param name="robot_description" command="$(find xacro)/xacro.py '$(find spider_description)/models/spider_model.xacro'" / -->
+ 
+  <param name="port_name" type="string" value="/dev/ttyACM0"/>
+
+
+  <param name="leg4_2" type="int" value="18"/>
+  <param name="leg1_1" type="int" value="19"/>
+  <param name="leg1_2" type="int" value="20"/>
+  <param name="leg1_3" type="int" value="21"/>
+
+  <param name="joint_upper_limit" type="double" value="1.5" />
+  <param name="joint_lower_limit" type="double" value="-1.5" />
+  
+  <param name="trapezoid_low_radius" type="double" value="0.049" />
+  <param name="trapezoid_high_radius" type="double" value="0.016" />
+  <param name="trapezoid_h" type="double" value="0.103" />
+  <param name="clearance" type="double" value="0.12" />
+  <param name="duration_ripple" type="double" value="0.64" />
+  <param name="duration_tripod" type="double" value="0.3" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find spider_description)/urdf.rviz"/>
+
+  <node name="crab_leg_kinematics" pkg="crab_leg_kinematics" type="leg_ik_service"/>
+  <node name="crab_maestro_controller" pkg="crab_maestro_controller" type="controller_sub"/>
+  <node name="crab_body_kinematics" pkg="crab_body_kinematics" type="body_kinematics"/>
+  <node name="crab_gait" pkg="crab_gait" type="gait_kinematics"/>
+  <node name="crab_imu" pkg="crab_imu" type="imu_control"/>
+  <node name="crab_teleop_joy" pkg="crab_teleop_joy" type="teleop_joy" output="screen"/>
+
+<!-- PS3 joy node -->
+  <node respawn="true" pkg="joy" type="joy_node" name="joy_node" >
+    <param name="dev" type="string" value="/dev/input/js0" />
+    <param name="deadzone" value="0.1" />
+    <param name="coalesce_interval" value="0.02" />
+  </node>
+
+</launch>
+
+

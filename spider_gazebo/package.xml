@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+  <name>spider_gazebo</name>
+  <version>0.1.0</version>
+  <description>Provides Gazebo plugins to expose Erle-Spider model to ROS</description>
+  <maintainer email="javier.f3rnand3z@gmail.com">Javier Fernandez</maintainer>
+  <author email="javier.f3rnand3z@gmail.com">Javier Fernandez</author>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>gazebo_ros_control</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  
+  <run_depend>gazebo_ros</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>gazebo_ros_control</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>spider_description</run_depend>
+
+</package>

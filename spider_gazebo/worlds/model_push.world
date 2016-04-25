@@ -1,0 +1,60 @@
+<?xml version="1.0"?> 
+<sdf version="1.4">
+    <world name="default">
+
+<!-- Ground Plane -->
+<include>
+    <uri>model://ground_plane</uri>
+</include>
+
+<include>
+    <uri>model://sun</uri>
+</include>
+
+<model name="uneven_terrain">
+    <pose>8 0 0  0 0 0</pose>
+    <static>true</static>
+    <link name="uneven terrain">
+        <visual name="visual">
+            <geometry>
+                <mesh>
+
+                    <uri>file:///home/fernandez/catkin_ws/src/spider/spider_description/meshes/mountain2.dae</uri>
+                    <scale> 3 5 1 </scale>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="collision">
+            <geometry>
+                <mesh>
+		    <uri>file:///home/fernandez/catkin_ws/src/spider/spider_description/meshes/mountain2.dae</uri>
+                    <scale> 3 5 1 </scale>
+                </mesh>
+            </geometry>
+        </collision>
+        <!--
+        <visual name="visual">
+            <pose> -5 0 0 0 0 -1.57</pose>
+            <geometry>
+                <mesh>
+                    <uri>file://ramp.dae</uri>
+                    <scale> 2 .1 .1 </scale>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="collision">
+            <pose> -5 0 0 0 0 -1.57</pose>
+            <geometry>
+                <mesh>
+                    <uri>file://ramp.dae</uri>
+                    <scale> 2 .1 .1 </scale>
+                </mesh>
+            </geometry>
+        </collision>
+        --> 
+    </link>
+</model>
+
+
+</world>
+</sdf>
