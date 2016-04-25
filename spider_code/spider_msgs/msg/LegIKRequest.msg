@@ -1,0 +1,3 @@
+int32 leg_number
+spider_msgs/LegJointsState current_joints
+spider_msgs/LegPositionState target_position

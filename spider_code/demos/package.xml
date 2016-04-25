@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package>
+  <name>demos</name>
+  <version>0.0.0</version>
+  <description>The demos package</description>
+
+  <maintainer email="xabi@erlerobot.com">Xabier Apraiz San Vicente</maintainer>
+
+  <license>BSD</license>
+
+   <author email="xabier@erlerobot.com">Xabier Apraiz San Vicente</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export> </export>
+</package>
