@@ -54,7 +54,7 @@ DiffDrivePlugin18servos::~DiffDrivePlugin18servos()
   delete rosnode_;
 }
 
-void DiffDrivePlugin18servos::chatterLegsState (const crab_msgs::LegsJointsStateConstPtr &legs_jnts){
+void DiffDrivePlugin18servos::chatterLegsState (const spider_msgs::LegsJointsStateConstPtr &legs_jnts){
 
 	float target_value;
 	int s_num;

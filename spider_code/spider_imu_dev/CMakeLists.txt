@@ -3,7 +3,7 @@ project(spider_imu_dev)
 
 find_package(catkin REQUIRED COMPONENTS
 	roscpp
-#	crab_msgs
+#	spider_msgs
 #	genmsg
 #    rospy
 #    std_msgs
@@ -14,10 +14,10 @@ find_package(catkin REQUIRED COMPONENTS
 
 
 ## Declare ROS messages and services
-#add_message_files(DEPENDENCIES crab_msgs DIRECTORY msg FILES apm_imu.msg)
+#add_message_files(DEPENDENCIES spider_msgs DIRECTORY msg FILES apm_imu.msg)
 
 
-#generate_messages(DEPENDENCIES crab_msgs)
+#generate_messages(DEPENDENCIES spider_msgs)
 
 
 catkin_package()

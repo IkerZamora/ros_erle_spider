@@ -2,7 +2,7 @@
 import rospy
 import sys
 import time
-from crab_msgs.msg import *
+from spider_msgs.msg import *
 from sensor_msgs.msg import Joy
  
 def talker():

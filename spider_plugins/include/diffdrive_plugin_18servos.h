@@ -18,7 +18,7 @@
 #include <boost/bind.hpp>
 
 //Subscriber crab_maestro_controller
-#include <crab_msgs/LegsJointsState.h>
+#include <spider_msgs/LegsJointsState.h>
 #include "PolstroSerialInterface.h"
 
 #include <algorithm>
@@ -48,7 +48,7 @@ protected:
 private:
   //Subscriber crab_maestro_controller
   ros::Subscriber sub;
-  void chatterLegsState (const crab_msgs::LegsJointsStateConstPtr &legs_jnts);
+  void chatterLegsState (const spider_msgs::LegsJointsStateConstPtr &legs_jnts);
   int channels[N_CHANNELS];
   double joint_lower_limit, joint_upper_limit, limit_coef;
   const static unsigned int num_joints = 3;

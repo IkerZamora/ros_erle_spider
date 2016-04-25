@@ -1,9 +1,9 @@
 
 #include <ros/ros.h>
-#include "crab_msgs/LegJointsState.h"
+#include "spider_msgs/LegJointsState.h"
 #include "PolstroSerialInterface.h"
 
-typedef boost::shared_ptr<crab_msgs::LegJointsState const> LegStateConstPtr;
+typedef boost::shared_ptr<spider_msgs::LegJointsState const> LegStateConstPtr;
 Polstro::SerialInterface* maestro;
 
 void chatterLegState (const LegStateConstPtr& state)
